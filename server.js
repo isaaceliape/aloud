@@ -1,12 +1,15 @@
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const hostname = 'localhost';
 const port = 8000;
 
-const server = http.createServer((req, res) => {
+const server = http.createServer((_req, res) => {
   const filePath = path.join(__dirname, 'index.html'); // Assuming your HTML file is named 'index.html' in the same directory
 
   fs.readFile(filePath, (err, data) => {

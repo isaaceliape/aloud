@@ -1,5 +1,6 @@
 {
   "name": "aloud",
+  "type": "module",
   "version": "1.0.0",
   "description": "Simple tool to read aloud text",
   "main": "server.js",
