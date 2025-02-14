@@ -12,7 +12,6 @@ No installation is necessary for this project. To run it locally, follow these s
 
     ```bash
     git clone https://github.com/isaaceliape/aloud.git
-    cd aloud
     ```
 
 2.  **Navigate to the project directory:**
@@ -56,10 +55,6 @@ http://localhost:8000/?q=Hello%20world
 
 This will automatically populate the text area with "Hello world" and start reading it aloud after a short delay.
 
-## License
-
-This project is licensed under the ISC License - see the [LICENSE.md](LICENSE.md) file for details.
-
 ## Author
 
 Isaac Eliape
@@ -70,4 +65,4 @@ If you encounter any bugs or issues, please report them on the [GitHub Issues pa
 
 ## Homepage
 
-[https://github.com/isaaceliape/aloud#readme](https://github.com/isaaceliape/aloud#readme)
+[Live demo](https://isaaceliape.github.io/aloud)
