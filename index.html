@@ -1,101 +1,133 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-    <title>Aloud</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-            background-color: #1c1c1e;
-            color: #fefefe;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            align-items: center;
-        }
-
-        select,
-        textarea,
-        button {
-            width: 300px;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border: none;
-        }
-
-        select {
-            background-color: #2c2c2e;
-            color: #fefefe;
-        }
-
-        textarea {
-            resize: vertical;
-            background-color: #2c2c2e;
-            color: #fefefe;
-            height: 60vh;
-            width: 70vw;
-            max-width: 1170px;
-            max-height: 370px;
-        }
-
-        button {
-            font-size: 16px;
-            background-color: #ff375f;
-            color: #fff;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background-color: #ff456f;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="container">
-        <h1>Aloud 🔊</h1>
-        <textarea id="text-input"
-            placeholder="Enter text here...">Hello, how are you doing today?</textarea>
-        <button id="speak-button">Speak</button>
-    </div>
-
-    <script>
-        window.addEventListener('load', () => {
-            const synth = window.speechSynthesis;
-            const textInput = document.getElementById('text-input');
-            const speakButton = document.getElementById('speak-button');
-
-            function speech() {
-                const defaultVoice = window.speechSynthesis.getVoices().find(voice => voice.name.includes('Jenny'));
-                var text = textInput.value;
-                var utterance = new SpeechSynthesisUtterance(text);
-                utterance['voice'] = window.speechSynthesis.getVoices().find(voice => voice.name.includes('Jenny'))
-                console.log(utterance);
-                synth.speak(utterance);
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Aloud</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+                background-color: #1c1c1e;
+                color: #fefefe;
             }
 
-            speakButton.addEventListener('click', speech);
-
-            // Get the query parameter 'q' from the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-
-            // If the query parameter exists, set the textarea's value
-            if (query) {
-                textInput.value = query;
-                setTimeout(speech, 500);
+            .container {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
             }
-        });
-    </script>
-</body>
 
+            select,
+            textarea,
+            button {
+                width: 300px;
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                border: none;
+            }
+
+            select {
+                background-color: #2c2c2e;
+                color: #fefefe;
+            }
+
+            textarea {
+                resize: vertical;
+                background-color: #2c2c2e;
+                color: #fefefe;
+                height: 60vh;
+                width: 70vw;
+                max-width: 1170px;
+                max-height: 370px;
+            }
+
+            button {
+                font-size: 16px;
+                background-color: #ff375f;
+                color: #fff;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
+
+            button:hover {
+                background-color: #ff456f;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Aloud 🔊</h1>
+            <textarea id="text-input" placeholder="Enter text here...">Hello, how are you doing today?</textarea>
+            <button id="speak-button">Speak</button>
+        </div>
+
+        <script>
+            function getBrowserName() {
+                const userAgent = navigator.userAgent;
+
+                if (userAgent.includes("Edg")) {
+                    return "edge";
+                }
+                if (userAgent.includes("Safari")) {
+                    return "safari";
+                }
+                if (userAgent.includes("Chrome")) {
+                    return "chrome";
+                }
+                if (userAgent.includes("Firefox")) {
+                    return "firefox";
+                }
+                if (userAgent.includes("MSIE") || userAgent.includes("Trident")) {
+                    return "ie";
+                }
+                return "browser not recognized";
+            }
+
+            window.addEventListener("load", () => {
+                const synth = window.speechSynthesis;
+                const textAreaEl = document.getElementById("text-input");
+                const speakButton = document.getElementById("speak-button");
+                const currentLang = navigator.language;
+                textAreaEl.value =
+                    currentLang === "pt-BR" ? "Oi, como você esta hoje?" : "Hello, how are you doing today?";
+
+                function speech() {
+                    const voices = synth.getVoices();
+                    const preferedVoices = {
+                        "pt-BR": {
+                            safari: "Luciana",
+                            edge: "Francisca",
+                        },
+                        "en-US": {
+                            safari: "Samantha",
+                            edge: "Jenny",
+                        },
+                    };
+                    const defaultVoice = voices.find((voice) =>
+                        voice.name.includes(preferedVoices[currentLang][getBrowserName()]),
+                    );
+                    var text = textAreaEl.value;
+                    var utterance = new SpeechSynthesisUtterance(text);
+                    utterance["voice"] = defaultVoice;
+                    synth.speak(utterance);
+                }
+
+                speakButton.addEventListener("click", speech);
+
+                // Get the query parameter 'q' from the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const query = urlParams.get("q");
+
+                // If the query parameter exists, set the textarea's value
+                if (query) {
+                    textAreaEl.value = query;
+                    setTimeout(speech, 500);
+                }
+            });
+        </script>
+    </body>
 </html>
